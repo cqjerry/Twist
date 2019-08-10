@@ -22,7 +22,7 @@ function shadowsocksconfig(){
     MODE="tcp_and_udp"
     MTU=""
     MPTCP="false"
-    IPV6FIRST="false"
+    IPV6FIRST="true"
     SYSLOG="true"
     NODELAY="true"
     FWS="enable"
