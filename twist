@@ -500,8 +500,8 @@ function sslibevinstall(){
     MAKECORES="$(grep -c ^processor /proc/cpuinfo)"
     [ -z "$MAKECORES" ] && MAKECORES="1"
 	if [ "$1" = "install" ]; then
-        export LIBSODIUM_VER=1.0.18
-        wget https://download.libsodium.org/libsodium/releases/download/1.0.18-RELEASE/libsodium-$LIBSODIUM_VER.tar.gz
+        export LIBSODIUM_VER=1.0.17
+        wget https://download.libsodium.org/libsodium/releases/download/1.0.17/libsodium-$LIBSODIUM_VER.tar.gz
         tar xvf libsodium-$LIBSODIUM_VER.tar.gz
         pushd libsodium-$LIBSODIUM_VER
         ./configure --prefix=/usr && make
