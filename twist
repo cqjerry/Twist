@@ -500,12 +500,14 @@ function sslibevinstall(){
     MAKECORES="$(grep -c ^processor /proc/cpuinfo)"
     [ -z "$MAKECORES" ] && MAKECORES="1"
 	if [ "$1" = "install" ]; then
-        export LIBSODIUM_VER=1.0.17
-        wget https://download.libsodium.org/libsodium/releases/download/1.0.17/libsodium-$LIBSODIUM_VER.tar.gz
-        tar xvf libsodium-$LIBSODIUM_VER.tar.gz
-        pushd libsodium-$LIBSODIUM_VER
-        ./configure --prefix=/usr && make
-        sudo make install
+        [ -z "$libsodiumver" ] && libsodiumver="$(wget -qO- https://api.github.com/repos/jedisct1/libsodium/releases/latest | grep 'tag_name' | cut -d\" -f4)"
+        [ -z "$libsodiumver1" ] && libsodiumver1="${libsodiumver%-*}"
+	wget -t 3 -T 30 -nv -O libsodium-${libsodiumver1}.tar.gz https://github.com/jedisct1/libsodium/releases/download/${libsodiumver}/libsodium-${libsodiumver1}.tar.gz
+        [ "$?" != "0" ] && sslibevinstallerr "libsodium-${libsodiumver}"
+        [ -d libsodium-${libsodiumver} ] && rm -rf libsodium-${libsodiumver}
+        tar zxf libsodium-${libsodiumver1}.tar.gz
+        pushd libsodium-${libsodiumver1}
+        ./configure --prefix=/usr && make "-j$((MAKECORES+1))" && make install || sslibevinstallerr "libsodium-${libsodiumver}" err
         popd
         if ! ldconfig -p | grep -wq "/usr/lib"; then
             echo "/usr/lib" > /etc/ld.so.conf.d/lib.conf
