@@ -513,8 +513,8 @@ function sslibevinstall(){
             echo "/usr/lib" > /etc/ld.so.conf.d/lib.conf
         fi
         ldconfig
-        [ -z "$mbedtlsver" ] && mbedtlsver="$(wget --no-check-certificate -qO- https://tls.mbed.org/download-archive | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | cut -d'.' -f1,2,3 | sort -V | tail -1)"
-        wget -t 3 -T 30 -nv -O mbedtls-${mbedtlsver}-gpl.tgz https://tls.mbed.org/download/mbedtls-${mbedtlsver}-gpl.tgz
+        [ -z "$mbedtlsver" ] && mbedtlsver="$(wget -qO- https://tls.mbed.org/download-archive | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | cut -d'.' -f1,2,3 | sort -V | tail -1)"
+        wget --no-check-certificate -t 3 -T 30 -nv -O mbedtls-${mbedtlsver}-gpl.tgz https://tls.mbed.org/download/mbedtls-${mbedtlsver}-gpl.tgz
         [ "$?" != "0" ] && sslibevinstallerr "mbedtls-${mbedtlsver}"
         [ -d mbedtls-${mbedtlsver} ] && rm -rf mbedtls-${mbedtlsver}
         tar xf mbedtls-${mbedtlsver}-gpl.tgz
